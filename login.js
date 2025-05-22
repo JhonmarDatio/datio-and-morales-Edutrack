@@ -25,15 +25,17 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       const { user } = await signIn(email, password);
       
-      if (user) {
-        localStorage.setItem("isLoggedIn", "true");
-        localStorage.setItem("currentUser", JSON.stringify(user));
-        
-        if (role === "student") {
-          window.location.href = "marking.html";
-        } else if (role === "teacher") {
-          window.location.href = "dash.html";
-        }
+      if (user.role !== role) {
+        throw new Error(`Invalid role. Please login as a ${role}`);
+      }
+
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("currentUser", JSON.stringify(user));
+      
+      if (role === "student") {
+        window.location.href = "marking.html";
+      } else if (role === "teacher") {
+        window.location.href = "dash.html";
       }
     } catch (error) {
       alert("❌ " + error.message);

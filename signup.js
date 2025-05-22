@@ -24,26 +24,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     try {
-      const { user } = await signUp(email, password);
-      
-      if (user) {
-        // Store additional user info in Supabase profiles table
-        const { error } = await supabase
-          .from('profiles')
-          .insert([
-            { 
-              id: user.id,
-              first_name: firstname,
-              last_name: lastname,
-              role: role
-            }
-          ]);
-
-        if (error) throw error;
-
-        alert("✅ Registration successful! Please check your email to verify your account.");
-        window.location.href = "login.html";
-      }
+      await signUp(email, password, firstname, lastname, role);
+      alert("✅ Registration successful!");
+      window.location.href = "login.html";
     } catch (error) {
       alert("❌ " + error.message);
     }
